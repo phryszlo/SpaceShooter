@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  font-family: monospace;
+}
+
+.title-container {
+display: flex;
+justify-content: center;
+align-items: center;
+width: 40vw;
+margin: 0 auto;
+}
+.gamebox {
+  display: block;
+  background-color: black;
+  width: 75vw;
+  height: calc(75vw * .62);
+  margin: 20px auto;
+}

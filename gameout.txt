@@ -1,0 +1,48 @@
+aliens remaining: 6
+alien[5] now up
+USS HelloWorld attacks Alien
+Alien has taken 5 points of damage.
+Alien has 0 hull remaining.
+Alien is vaporized.
+---------------
+
+aliens remaining: 5
+alien[4] now up
+USS HelloWorld attacks Alien
+Alien has taken 5 points of damage.
+Alien has -2 hull remaining.
+Alien is vaporized.
+---------------
+
+aliens remaining: 4
+alien[3] now up
+USS HelloWorld attacks Alien
+Alien has taken 5 points of damage.
+Alien has -2 hull remaining.
+Alien is vaporized.
+---------------
+
+aliens remaining: 3
+alien[2] now up
+USS HelloWorld attacks Alien
+Alien has taken 5 points of damage.
+Alien has -1 hull remaining.
+Alien is vaporized.
+---------------
+
+aliens remaining: 2
+alien[1] now up
+USS HelloWorld attacks Alien
+Alien has taken 5 points of damage.
+Alien has 0 hull remaining.
+Alien is vaporized.
+---------------
+
+aliens remaining: 1
+alien[0] now up
+USS HelloWorld attacks Alien
+Alien has taken 5 points of damage.
+Alien has 0 hull remaining.
+Alien is vaporized.
+---------------
+
