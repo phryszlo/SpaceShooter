@@ -21,7 +21,7 @@ body {
   background-color: white;
   border: 1.5px solid black;
   width: 85vw;
-  height: 75vh;
+  height: fit-content;
   margin: 20px auto;
 }
 
@@ -53,10 +53,25 @@ body {
   grid-column-start: 1;
   grid-column-end: 2;
 }
+.battle-btn {
+  width: 70%;
+  margin: auto;
+  height: 2.6em;
+  border-radius: 3px;
+  background-color: orangered;
+  font-weight: bold;
+}
+.battle-btn:hover {
+  background-color: olivedrab;
+}
+.battle-btn:active {
+  background-color: red;
+}
 
 .alien-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 100%;
   border: 1px solid;
@@ -67,13 +82,14 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  background-color: goldenrod;
+  /* background-color: goldenrod; */
 }
 
 .alien {
-  /* border: 1px solid; */
+  border: 1px solid;
   height: 20vh;
   width: 20vw;
+  padding: 5px;
 }
 
 .alien-label {
@@ -83,13 +99,20 @@ body {
   /* border-bottom: 1px solid; */
 }
 
+.console-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .console {
   width: 85vw;
   margin: auto;
   height: 600px;
-  margin-bottom: 100px;;
+  margin-bottom: 100px;
+  padding: 10px;
   color: white;
+  overflow-y: auto;
   background-color: black;
 }
 
