@@ -6,9 +6,41 @@ const playerDiv = document.querySelector('.player');
 const aliensDiv = document.querySelector('.aliens');
 const battleBtn = document.querySelector('.battle-btn');
 
+// THE PLAYERS
+let player = null;
+let aliens = null;
+
+
+
+const createAlienDivs = () => {
+  aliensDiv.innerHTML = '';
+  aliens.forEach((alien, index) => {
+    alien.identification = `Alien[${index}]`;
+    const div = document.createElement('div');
+    div.classList.add('alien', `alien${index}`);
+    div.innerHTML = alien.identification;
+    aliensDiv.append(div);
+  })
+}
+
+
+const updateAlienWebDisplay = () => {
+  aliens.forEach((alien, index) => {
+    const alienbox = document.querySelector(`.alien${index}`);
+    alienbox.innerHTML = `
+      identification: ${alien.identification}<br>
+      hull: ${alien.hull}<br>
+      firepower: ${alien.firepower}<br>
+      accuracy: ${alien.accuracy}<br>
+    `
+  })
+}
+
 window.addEventListener('load', () => {
   battleBtn.addEventListener('click', () => {
-    createAlienDivs(aliens);
+    player = new PlayerShip();
+    aliens = AlienShip.spawn(8);
+    createAlienDivs();
     battle();
   });
 });
@@ -110,28 +142,6 @@ class AlienShip {
 
 
 
-// THE PLAYERS
-const player = new PlayerShip();
-const aliens = AlienShip.spawn(8);
-
-
-// WHAT WE'RE UP AGAINST
-aliens.forEach((alien, index) => {
-  spacelog(`alien ${index} has ${alien.hull} hull points.`);
-})
-
-
-// CREATE ALIEN DIVS IN WEB ALIEN CONTAINER
-//    (called from battle-btn click)
-const createAlienDivs = (aliens) => {
-  aliens.forEach((alien, index) => {
-    alien.identification = `Alien[${index}]`;
-    const div = document.createElement('div');
-    div.classList.add('alien', `alien${index}`);
-    div.innerHTML = alien.identification;
-    aliensDiv.append(div);
-  })
-}
 
 
 
@@ -178,6 +188,8 @@ const battle = () => {
     aliens.splice(i, 1);
 
     spacelog('---------------\n');
+
+    updateAlienWebDisplay();
   }
 
 }
