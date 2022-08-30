@@ -25,6 +25,10 @@ body {
   margin: 20px auto;
 }
 
+
+
+/* ================== PLAYERS SECTION =============== */
+
 .player-container {
   display: flex;
   flex-direction: column;
@@ -34,14 +38,14 @@ body {
   border: 1px solid black;
 }
 
-.player {
-  /* border: solid 1px; */
-  /* border-right: none; */
-}
 
 .player-title {
   color: black;
 }
+
+
+
+/* ================== CONTROLS SECTION =============== */
 
 .controls {
   display: flex;
@@ -50,13 +54,11 @@ body {
   height: 100%;
   width: 100%;
   align-items: center;
-  /* background-color: blue; */
+  text-align: center;
+  background-color: aqua;
   grid-area: 2/1/3/2;
-  grid-row-end: 3;
-  grid-column-start: 1;
-  grid-column-end: 2;
 }
-
+                      
 #num-aliens {
   height: 1.7em;
   width: 2.2em;
@@ -66,17 +68,16 @@ body {
 }
 .num-aliens-lbl {
   text-align: right;
-  margin-left: 1em;
+  margin: .1em 0 .2em 0;
 }
 
 .battle-btn {
-  width: 70%;
-  margin: auto;
+  width: 92%;
   height: 2.6em;
   border-radius: 3px;
   background-color: orangered;
   font-weight: bold;
-  margin-right: 1em;
+  margin: .2em .7em 0 0;
 }
 .battle-btn:hover {
   background-color: olivedrab;
@@ -84,10 +85,16 @@ body {
 .battle-btn:active {
   background-color: red;
 }
+
 .results {
+  white-space: pre;
   width: 100%;
+  text-align: left;
+  padding: 0 .4em;
 }
 
+
+/* ================== ALIENS SECTION =============== */
 .alien-container {
   display: flex;
   flex-direction: column;
@@ -119,6 +126,9 @@ body {
 }
 .dead-alien {
   background-color: orangered;
+}
+.winning-alien {
+  background-color: greenyellow;
 }
 
 .alien-label {

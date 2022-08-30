@@ -5,6 +5,8 @@ const webConsole = document.querySelector('.console');
 const playerDiv = document.querySelector('.player');
 const aliensDiv = document.querySelector('.aliens');
 const battleBtn = document.querySelector('.battle-btn');
+const retreatBtn = document.querySelector('.retreat');
+const continueBtn = document.querySelector('.continue');
 const numAliens = document.querySelector('#num-aliens');
 const resultsDiv = document.querySelector('.results');
 
@@ -12,45 +14,57 @@ const resultsDiv = document.querySelector('.results');
 let player = null;
 let aliens = null;
 
-
-
 const createAlienDivs = () => {
-  aliensDiv.innerHTML = '';
+  aliensDiv.innerText = '';
   // aliens.forEach((alien, index) => {
     for (let i = aliens.length - 1; i >= 0; i--){
 
     aliens[i].id = `Alien[${i}]`;
     const div = document.createElement('div');
     div.classList.add('alien', `alien${i}`);
-    div.innerHTML = aliens[i].id;
+    div.innerText = aliens[i].id;
     aliensDiv.append(div);
   }
 }
-
 
 const updateAlienWebDisplay = () => {
   // aliens.forEach((alien, index) => {
     for (let i = aliens.length - 1; i >= 0; i--){
     const alienbox = document.querySelector(`.alien${i}`);
-    alienbox.innerHTML = `
-      id: ${aliens[i].id}<br>
-      hull: ${aliens[i].hull}<br>
-      firepower: ${aliens[i].firepower}<br>
-      accuracy: ${aliens[i].accuracy}<br>
+    alienbox.innerText = 
+      `id: ${aliens[i].id} 
+      hull: ${aliens[i].hull}
+      firepower: ${aliens[i].firepower}
+      accuracy: ${aliens[i].accuracy}
     `
   }
 }
+const updatePlayerWebDisplay = () => {
+    const playerbox = document.querySelector(`.player`);
+    playerbox.innerText = 
+      `id: ${player.id} 
+      hull: ${player.hull}
+      firepower: ${player.firepower}
+      accuracy: ${player.accuracy}
+    `
+}
 
+// --------- LOAD EVENT -----------
 window.addEventListener('load', () => {
   battleBtn.addEventListener('click', () => {
     player = new PlayerShip();
     aliens = AlienShip.spawn(numAliens.value);
     createAlienDivs();
+    updateAlienWebDisplay();
     battle();
   });
+  retreatBtn.addEventListener('click', () => {
+
+  });
+  continueBtn.addEventListener('click', () => {
+
+  })
 });
-
-
 
 // #region ships
 
@@ -151,20 +165,25 @@ class AlienShip {
 
 const endGame = (won) => {
   if (won) {
-    resultsDiv.innerHTML = `YOU WIN<br>All aliens have been defeated.<br>`
-  } else {
-    resultsDiv.innerHTML = `GAME OVER<br>Your ship is vaporized.<br>
-                            Alien[${aliens.length - 1}] has defeated you.`
+    resultsDiv.replaceChildren(
+      `YOU WIN\n`,
+      'All aliens have been defeated.');
+    } else {
+      resultsDiv.replaceChildren(
+        `GAME OVER\n`,
+      `Your ship is vaporized.\n`,
+      `Alien[${aliens.length - 1}] has defeated you.`);
   }
 }
 
 
 
 
-spacelog();
+spacelog('');
 // THE BATTLE
 
 const battle = () => {
+  webConsole.replaceChildren('');
 
   let alive = true;
   // these first two loops would not get through all 6 battles
@@ -193,6 +212,8 @@ const battle = () => {
     } // end while loop
 
     if (player.hull <= 0) {
+      document.querySelector(`.alien${i}`).classList.add('winning-alien');
+
       spacelog('GAME OVER');
       alive = false;
       break;
@@ -204,9 +225,13 @@ const battle = () => {
     spacelog('---------------\n');
 
     updateAlienWebDisplay();
+    updatePlayerWebDisplay();
   }
   endGame(alive);
+}
 
+const fight = () => {
+  
 }
 
 
