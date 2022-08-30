@@ -6,6 +6,8 @@ const playerDiv = document.querySelector('.player');
 const aliensDiv = document.querySelector('.aliens');
 const battleBtn = document.querySelector('.battle-btn');
 const numAliens = document.querySelector('#num-aliens');
+const resultsDiv = document.querySelector('.results');
+
 // THE PLAYERS
 let player = null;
 let aliens = null;
@@ -14,26 +16,29 @@ let aliens = null;
 
 const createAlienDivs = () => {
   aliensDiv.innerHTML = '';
-  aliens.forEach((alien, index) => {
-    alien.identification = `Alien[${index}]`;
+  // aliens.forEach((alien, index) => {
+    for (let i = aliens.length - 1; i >= 0; i--){
+
+    aliens[i].id = `Alien[${i}]`;
     const div = document.createElement('div');
-    div.classList.add('alien', `alien${index}`);
-    div.innerHTML = alien.identification;
+    div.classList.add('alien', `alien${i}`);
+    div.innerHTML = aliens[i].id;
     aliensDiv.append(div);
-  })
+  }
 }
 
 
 const updateAlienWebDisplay = () => {
-  aliens.forEach((alien, index) => {
-    const alienbox = document.querySelector(`.alien${index}`);
+  // aliens.forEach((alien, index) => {
+    for (let i = aliens.length - 1; i >= 0; i--){
+    const alienbox = document.querySelector(`.alien${i}`);
     alienbox.innerHTML = `
-      identification: ${alien.identification}<br>
-      hull: ${alien.hull}<br>
-      firepower: ${alien.firepower}<br>
-      accuracy: ${alien.accuracy}<br>
+      id: ${aliens[i].id}<br>
+      hull: ${aliens[i].hull}<br>
+      firepower: ${aliens[i].firepower}<br>
+      accuracy: ${aliens[i].accuracy}<br>
     `
-  })
+  }
 }
 
 window.addEventListener('load', () => {
@@ -55,7 +60,7 @@ class PlayerShip {
     this.hull = 20;
     this.firepower = 5;
     this.accuracy = 0.7;
-    this.identification = 'USS HelloWorld';
+    this.id = 'USS HelloWorld';
   }
 
   // spawn one alien or an array of aliens of size 'num'
@@ -74,18 +79,18 @@ class PlayerShip {
 
   attack(target) {
     const hit = Math.random() <= this.accuracy;
-    spacelog(`${this.identification} attacks ${target.identification}`);
+    spacelog(`${this.id} attacks ${target.id}`);
 
     if (hit) {
       spacelog(`it's a hit`);
       target.hull -= this.firepower;
-      spacelog(`${target.identification} has taken ${this.firepower} points of damage.`);
-      spacelog(`${target.identification} has ${target.hull} hull remaining.`);
+      spacelog(`${target.id} has taken ${this.firepower} points of damage.`);
+      spacelog(`${target.id} has ${target.hull} hull remaining.`);
       if (target.hull > 0) {
-        spacelog(`${target.identification} has ${target.hull} hull remaining.`);
+        spacelog(`${target.id} has ${target.hull} hull remaining.`);
       } else {
         // TARGET DESTROYED
-        spacelog(`${target.identification} is vaporized.`);
+        spacelog(`${target.id} is vaporized.`);
       }
     }
   }
@@ -100,25 +105,25 @@ class AlienShip {
     this.firepower = Math.floor(Math.random() * ((4 - 2) + 1)) + 2;
     this.accuracy =
       Number.parseFloat(Math.random() * (.8 - .6) + .6).toFixed(1);
-    this.identification = 'Alien';
+    this.id = 'Alien';
   }
 
   attack(target) {
     const hit = Math.random() <= this.accuracy;
-    spacelog(`${this.identification} attacks ${target.identification}`);
+    spacelog(`${this.id} attacks ${target.id}`);
 
     if (hit) {
       spacelog(`it's a hit`);
 
       target.hull -= this.firepower;
 
-      spacelog(`${target.identification} has taken ${this.firepower} points of damage.`);
-      spacelog(`${target.identification} has ${target.hull} hull remaining.`);
+      spacelog(`${target.id} has taken ${this.firepower} points of damage.`);
+      spacelog(`${target.id} has ${target.hull} hull remaining.`);
       if (target.hull > 0) {
-        spacelog(`${target.identification} has ${target.hull} hull remaining.`);
+        spacelog(`${target.id} has ${target.hull} hull remaining.`);
       } else {
         // TARGET DESTROYED
-        spacelog(`${target.identification} is vaporized.`);
+        spacelog(`${target.id} is vaporized.`);
       }
     }
   }
@@ -144,6 +149,14 @@ class AlienShip {
 
 
 
+const endGame = (won) => {
+  if (won) {
+    resultsDiv.innerHTML = `YOU WIN<br>All aliens have been defeated.<br>`
+  } else {
+    resultsDiv.innerHTML = `GAME OVER<br>Your ship is vaporized.<br>
+                            Alien[${aliens.length - 1}] has defeated you.`
+  }
+}
 
 
 
@@ -153,7 +166,7 @@ spacelog();
 
 const battle = () => {
 
-
+  let alive = true;
   // these first two loops would not get through all 6 battles
   // because of splicing the array
   // aliens.forEach((alien, index) => {
@@ -175,12 +188,13 @@ const battle = () => {
       }
       else {
         spacelog(`alien ${i} died`);
-
+        document.querySelector(`.alien${i}`).classList.add('dead-alien');
       }
     } // end while loop
 
     if (player.hull <= 0) {
       spacelog('GAME OVER');
+      alive = false;
       break;
     }
 
@@ -191,8 +205,10 @@ const battle = () => {
 
     updateAlienWebDisplay();
   }
+  endGame(alive);
 
 }
+
 
 
 

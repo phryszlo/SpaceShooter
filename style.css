@@ -20,7 +20,7 @@ body {
   grid-template-rows: repeat(2, 1fr);
   background-color: white;
   border: 1.5px solid black;
-  width: 85vw;
+  width: 95vw;
   height: fit-content;
   margin: 20px auto;
 }
@@ -45,6 +45,8 @@ body {
 
 .controls {
   display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   height: 100%;
   width: 100%;
   align-items: center;
@@ -82,6 +84,9 @@ body {
 .battle-btn:active {
   background-color: red;
 }
+.results {
+  width: 100%;
+}
 
 .alien-container {
   display: flex;
@@ -96,7 +101,8 @@ body {
 .aliens {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: flex-start;
+  padding: .4em;
   /* background-color: goldenrod; */
 }
 
@@ -109,6 +115,10 @@ body {
   max-height: 20vh;
   min-height: 5vh;
   padding: 5px;
+  margin: .2em;
+}
+.dead-alien {
+  background-color: orangered;
 }
 
 .alien-label {
