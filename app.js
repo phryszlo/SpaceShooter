@@ -1,6 +1,6 @@
 
 
-class USS {
+class PlayerShip {
   constructor() {
     this.hull = 20;
     this.firepower = 5;
@@ -8,15 +8,16 @@ class USS {
     this.identifier = 'USS HelloWorld';
   }
 
+  // spawn one alien or an array of aliens of size 'num'
   static spawn(num = 1) {
     const ships = [];
     if (num > 1) {
       for (let i = 0; i < num; i++) {
-        ships.push(new USS());
+        ships.push(new PlayerShip());
       }
     }
     else {
-      return new USS();
+      return new PlayerShip();
     }
     return ships;
   }
@@ -51,7 +52,7 @@ class USS {
   }
 }
 
-class Alien {
+class AlienShip {
   constructor() {
     // wrote this formula this way for reference
     this.hull = Math.floor(Math.random() * ((6 - 3) + 1)) + 3;
@@ -81,24 +82,24 @@ class Alien {
     }
   }
 
-
+  // spawn one alien or an array of aliens of size 'num'
   static spawn(num = 1) {
     const alienses = [];
     if (num > 1) {
       for (let i = 0; i < num; i++) {
-        alienses.push(new Alien());
+        alienses.push(new AlienShip());
       }
     }
     else {
-      return new Alien();
+      return new AlienShip();
     }
     return alienses;
   }
 }
 
 // THE PLAYERS
-const player = new USS();
-const aliens = Alien.spawn(6);
+const player = new PlayerShip();
+const aliens = AlienShip.spawn(6);
 
 
 // log what we're up against
@@ -113,11 +114,11 @@ console.log();
 // these first two loops would not get through all 6 battles
 // because of splicing the array
 // aliens.forEach((alien, index) => {
-  // for (let i = 0; i < aliens.length; i++) {
-  
-  
-  // this reverse order loop seems to work
-  for (let i = aliens.length - 1; i >= 0; i--) {
+// for (let i = 0; i < aliens.length; i++) {
+
+
+// this reverse order loop seems to work
+for (let i = aliens.length - 1; i >= 0; i--) {
   console.log(`aliens remaining: ${aliens.length}`);
   console.log(`alien[${i}] now up. it has ${aliens[i].hull} hull points.`);
   while (player.hull > 0 && aliens[i].hull > 0) {
@@ -137,6 +138,7 @@ console.log();
 
   if (player.hull <= 0) {
     console.log('GAME OVER');
+    break;
   }
 
   // remove dead alien from array

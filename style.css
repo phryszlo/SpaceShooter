@@ -11,9 +11,63 @@ width: 40vw;
 margin: 0 auto;
 }
 .gamebox {
-  display: block;
-  background-color: black;
-  width: 75vw;
-  height: calc(75vw * .62);
+  /* display: flex; 
+  justify-content: space-between;
+  align-items: center; */
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: repeat(1fr);
+  background-color: white;
+  border: 1.5px solid black;
+  width: 85vw;
+  height: 75vh;
   margin: 20px auto;
+}
+
+.player-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 5px;
+  border: 1px solid black;
+}
+.player {
+  border: solid 1px;
+  height: 30vh;
+  width: 25vw;
+}
+
+.player-title {
+  color: black;
+}
+
+.alien-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 1px solid;
+}
+
+.aliens {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.alien {
+  border: 1px solid;
+  height: 20vh;
+  width: 20vw;
+}
+
+.alien-label {
+  width: 100%;
+  align-self: flex-start;
+  text-align: center;
+  /* border-bottom: 1px solid; */
+}
+
+.img-source {
+  display: none;
 }
