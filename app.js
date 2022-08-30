@@ -1,5 +1,13 @@
 
 
+// target html elements
+const webConsole = document.querySelector('.console');
+const playerDiv = document.querySelector('.player');
+const aliensContainer = document.querySelector('.alien-container');
+const controlsDiv = document.querySelector('.controls');
+
+
+
 class PlayerShip {
   constructor() {
     this.hull = 20;
