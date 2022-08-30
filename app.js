@@ -5,6 +5,14 @@ const webConsole = document.querySelector('.console');
 const playerDiv = document.querySelector('.player');
 const aliensContainer = document.querySelector('.alien-container');
 const controlsDiv = document.querySelector('.controls');
+const battleBtn = document.querySelector('.battle-btn');
+
+window.addEventListener('load', () => {
+  battleBtn.addEventListener('click', () => {
+    battle();
+  });
+});
+
 
 
 
@@ -45,17 +53,6 @@ class PlayerShip {
         // TARGET DESTROYED
         console.log(`${target.identifier} is vaporized.`);
       }
-    }
-  }
-
-  takeHit(damage) {
-    this.hull -= damage;
-    if (this.hull <= 0) {
-      console.log('you are blowed up and very dead.');
-    }
-    else {
-      console.log(`you have taken ${damage} points of damage to your hull.`);
-      console.log(`hull remaining: ${this.hull}`);
     }
   }
 }
@@ -119,42 +116,46 @@ aliens.forEach((alien, index) => {
 console.log();
 // THE BATTLE
 
-// these first two loops would not get through all 6 battles
-// because of splicing the array
-// aliens.forEach((alien, index) => {
-// for (let i = 0; i < aliens.length; i++) {
+const battle = () => {
 
 
-// this reverse order loop seems to work
-for (let i = aliens.length - 1; i >= 0; i--) {
-  console.log(`aliens remaining: ${aliens.length}`);
-  console.log(`alien[${i}] now up. it has ${aliens[i].hull} hull points.`);
-  while (player.hull > 0 && aliens[i].hull > 0) {
+  // these first two loops would not get through all 6 battles
+  // because of splicing the array
+  // aliens.forEach((alien, index) => {
+  // for (let i = 0; i < aliens.length; i++) {
 
-    // ADD OPTION TO RUN AND HIDE HERE
 
-    player.attack(aliens[i]);
-    if (aliens[i].hull > 0) {
-      console.log(`alien ${i} survived`);
-      aliens[i].attack(player);
+  // this reverse order loop seems to work
+  for (let i = aliens.length - 1; i >= 0; i--) {
+    console.log(`aliens remaining: ${aliens.length}`);
+    console.log(`alien[${i}] now up. it has ${aliens[i].hull} hull points.`);
+    while (player.hull > 0 && aliens[i].hull > 0) {
+
+      // ADD OPTION TO RUN AND HIDE HERE
+
+      player.attack(aliens[i]);
+      if (aliens[i].hull > 0) {
+        console.log(`alien ${i} survived`);
+        aliens[i].attack(player);
+      }
+      else {
+        console.log(`alien ${i} died`);
+
+      }
+    } // end while loop
+
+    if (player.hull <= 0) {
+      console.log('GAME OVER');
+      break;
     }
-    else {
-      console.log(`alien ${i} died`);
 
-    }
-  } // end while loop
+    // remove dead alien from array
+    aliens.splice(i, 1);
 
-  if (player.hull <= 0) {
-    console.log('GAME OVER');
-    break;
+    console.log('---------------\n');
   }
 
-  // remove dead alien from array
-  aliens.splice(i, 1);
-
-  console.log('---------------\n');
 }
-
 
 
 
