@@ -5,7 +5,7 @@ const webConsole = document.querySelector('.console');
 const playerDiv = document.querySelector('.player');
 const aliensDiv = document.querySelector('.aliens');
 const battleBtn = document.querySelector('.battle-btn');
-
+const numAliens = document.querySelector('#num-aliens');
 // THE PLAYERS
 let player = null;
 let aliens = null;
@@ -39,7 +39,7 @@ const updateAlienWebDisplay = () => {
 window.addEventListener('load', () => {
   battleBtn.addEventListener('click', () => {
     player = new PlayerShip();
-    aliens = AlienShip.spawn(8);
+    aliens = AlienShip.spawn(numAliens.value);
     createAlienDivs();
     battle();
   });
