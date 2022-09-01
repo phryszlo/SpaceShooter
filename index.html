@@ -26,9 +26,9 @@
       <div class="card controls">
         <div class="card-body controls-inner">
           <div class="count-div">
-            <h5 class="card-title num-aliens-lbl">
+            <h6 class="num-aliens-lbl">
               alien count
-            </h5>
+            </h6>
             <input
               type="number"
               name="alien-count"
@@ -40,15 +40,31 @@
 
           <!-- ==== THE BUTTONS ==== -->
           <div class="btns" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-secondary battle-btn">
-              battle
-            </button>
-            <button type="button" class="btn btn-secondary retreat">
-              retreat
-            </button>
-            <button type="button" class="btn btn-secondary continue">
-              attack
-            </button>
+            <div class="battle-section">
+              <div class="auto-battle-container">
+                <button type="button" class="btn btn-secondary battle-btn">
+                  battle
+                </button>
+                <label for="auto-battle" class="auto-battle-lbl">
+                  auto-battle
+                </label>
+                <input
+                  type="checkbox"
+                  name="auto-battle"
+                  id="auto-battle"
+                  value="auto-battle"
+                />
+              </div>
+              
+            </div>
+            <div class="attack-retreat">
+              <button type="button" class="btn btn-secondary continue">
+                attack
+              </button>
+              <button type="button" class="btn btn-secondary retreat">
+                retreat
+              </button>
+            </div>
           </div>
         </div>
 
@@ -58,9 +74,8 @@
       <div class="alien-container">
         <h2 class="alien-label">Aliens</h2>
         <div class="in-game-msg"></div>
-        <div class="aliens">
-
-        </div>
+        <div class="aliens"></div>
+        <img src="rocket.png" alt="" class="rocket" />
       </div>
     </div>
 

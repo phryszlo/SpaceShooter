@@ -68,9 +68,14 @@ body {
 .count-div {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  margin: 0 0 .6em 0;
 }
 .num-aliens-lbl {
+  font-family: monospace;
+  color: green;
+  line-height: 10px;
+  font-size: 15px;
   text-align: right;
   margin: .3em 0 .4em 0;
   font-size: 16px
@@ -81,9 +86,14 @@ body {
   width: 3.2em;
   margin-left: 1em;
   font-size: 13px;
+  font-weight: bold;
   margin: 0 .3em 0 .3em;
 }
 
+/* https://stackoverflow.com/questions/24286506/number-input-always-show-spin-buttons */
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 1
+}
 
 .controls-inner {
   display: flex;
@@ -99,6 +109,18 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.attack-retreat {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.battle-section {
+  display: flex;
+}
+.auto-battle-div {
+  display: flex;
 }
 
 .battle-btn {
@@ -125,10 +147,15 @@ body {
 
 .retreat, .continue {
   width: 70px;
-
-  background-color: #c48;
-  color: white;
+  background-color: white;
+  color: red;
+  font-weight: bold;
 }
+/* .continue {
+
+} */
+
+
 .retreat-selected {
   background-color: blueviolet;
 }
@@ -137,6 +164,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
   white-space: pre; /* i don't remember why i did this*/
   width: 90%;
   height: 100%;
@@ -145,6 +173,7 @@ body {
   margin: auto;
 }
 .results p {
+  text-align: center;
   font-size: 14px;;
   display: block;
   width: 60%;
@@ -229,6 +258,29 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+
+@keyframes rocket-intro {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 150%;
+  }
+}
+
+.rocket {
+  display: none;
+  width: 76px;
+  position: absolute;
+  top: 50%;
+  left: -100%;
+}
+
+.rocket-intro {
+  animation: rocket-intro 4s;
+  display: block;
 }
 
 .console {

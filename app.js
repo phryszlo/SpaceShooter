@@ -5,12 +5,14 @@ const spaceConsole = document.querySelector('.console');
 const playerDiv = document.querySelector('.player');
 const aliensDiv = document.querySelector('.aliens');
 const battleBtn = document.querySelector('.battle-btn');
+const autoBattle = document.querySelector('#auto-battle');
 const retreatBtn = document.querySelector('.retreat');
 const continueBtn = document.querySelector('.continue');
 const numAliens = document.querySelector('#num-aliens');
 const resultsDiv = document.querySelector('.results');
 const inGameMsg = document.querySelector('.in-game-msg');
 const xImg = document.querySelector('.x-img');
+const rocketImg = document.querySelector('.rocket')
 const sploded = document.querySelector('.sploded');
 
 let player = null;
@@ -22,8 +24,6 @@ let choseContinue = false;
 const createAlienDivs = () => {
   aliensDiv.innerText = '';
   aliens.forEach((alien, i) => {
-    // for (let i = aliens.length - 1; i >= 0; i--) {
-
     aliens[i].id = `Alien[${i}]`;
     const div = document.createElement('div');
     div.classList.add('alien', `alien${i}`);
@@ -59,9 +59,13 @@ const updatePlayerWebDisplay = () => {
 // --------- LOAD EVENT -----------
 window.addEventListener('load', () => {
 
+  numAliens.addEventListener('change', () => {
+    spacelog('numAliens change event')
+  })
+
   battleBtn.addEventListener('click', () => {
     aliens = AlienShip.spawn(numAliens.value);
-    createAlienDivs();
+    // createAlienDivs();
     // updateAlienWebDisplay();
     battle();
   });
@@ -205,7 +209,7 @@ const endGame = (won) => {
 // https://thewebdev.info/2022/02/09/how-to-create-pause-or-delay-in-a-javascript-for-loop/#:~:text=JavaScript%20for%20loop%3F-,To%20create%20pause%20or%20delay%20in%20a%20JavaScript%20for%20loop,with%20a%20for%2Dof%20loop.&text=to%20define%20the%20wait%20function,to%20loop%20through%20an%20array.
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
-// THE BATTLE
+// [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[  THE BATTLE  ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]] 
 
 const battle = async () => {
   // clear spacelog console
@@ -215,15 +219,21 @@ const battle = async () => {
   let stillAlive = true;
   let battleEnded = false;
 
+  // RUN THE INTRO ANIMATION
+  rocketImg.classList.add('rocket-intro')
+
+  createAlienDivs();
+  updateAlienWebDisplay();
+
+  // this seems kinda hacky
+  await wait(3000);
+  rocketImg.classList.remove('rocket-intro');
 
   for (let i = 0; i < aliens.length; i++) {
-
-    // if (choseContinue) {
 
     spacelog(`---------BATTLE WITH ALIEN[${i}]------\n`);
     spacelog(`aliens remaining: 
               ${aliens.filter(a => a.alive === true).length}`);
-
 
     updateAlienWebDisplay();
 
@@ -235,28 +245,23 @@ const battle = async () => {
       // that means this alien is defeated
       aliens[i].alive = false;
 
-      // if (choseRetreat) {
-      //   const p1 = document.createElement('p');
-      //   p1.replaceChildren(`GAME OVER`)
-      //   break; // need to do more than this, but try to make this work first
-      // }
-      // here we want to wait for user to click attack button or retreat button
-      // but how do we wait for that? 
-      // here's a way.
-      while (!choseContinue) {
-        if (choseRetreat) {
-
-          battleEnded = true;
-          break;
+      if (!autoBattle.checked) {
+        // here we want to wait for user to click attack button or retreat button
+        while (!choseContinue) {
+          if (choseRetreat) {
+            battleEnded = true;
+            break;
+          }
+          inGameMsg.replaceChildren(`${aliens[i].id} was defeated. hit attack / retreat to continue. `)
+          await wait(100);
+          if (i === aliens.length) choseContinue = true;
         }
-        inGameMsg.replaceChildren(`${aliens[i].id} was defeated. hit attack retreat to continue. `)
-        await wait(100);
-        if (i === aliens.length) choseContinue = true;
+      }
+      else {
+        inGameMsg.replaceChildren(`${aliens[i].id} was defeated. hit attack / retreat to continue. `)
+
       }
       inGameMsg.replaceChildren('')
-
-      // for now, this is just to simulate some interaction having occurred.
-      // await wait(361);
     }
     else {
       // mark this alien the victor and break
