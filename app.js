@@ -9,8 +9,10 @@ const retreatBtn = document.querySelector('.retreat');
 const continueBtn = document.querySelector('.continue');
 const numAliens = document.querySelector('#num-aliens');
 const resultsDiv = document.querySelector('.results');
+const inGameMsg = document.querySelector('.in-game-msg');
 const xImg = document.querySelector('.x-img');
 const sploded = document.querySelector('.sploded');
+
 let player = null;
 let aliens = null;
 
@@ -56,8 +58,8 @@ const updatePlayerWebDisplay = () => {
 
 // --------- LOAD EVENT -----------
 window.addEventListener('load', () => {
+
   battleBtn.addEventListener('click', () => {
-    player = new PlayerShip();
     aliens = AlienShip.spawn(numAliens.value);
     createAlienDivs();
     // updateAlienWebDisplay();
@@ -71,6 +73,10 @@ window.addEventListener('load', () => {
     choseContinue = true;
     choseRetreat = false;
   })
+  player = new PlayerShip();
+
+  updatePlayerWebDisplay();
+
 });
 
 // #region ships
@@ -204,8 +210,11 @@ const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 const battle = async () => {
   // clear spacelog console
   spaceConsole.replaceChildren('');
+  resultsDiv.replaceChildren('')
 
   let stillAlive = true;
+  let battleEnded = false;
+
 
   for (let i = 0; i < aliens.length; i++) {
 
@@ -217,31 +226,62 @@ const battle = async () => {
 
 
     updateAlienWebDisplay();
-    updatePlayerWebDisplay();
 
     // FIGHT this alien. fight() returns bool.
     stillAlive = fight(i);
 
     // call wait between fights to simulate something happening
     if (stillAlive) {
-      // that means this alien is !still-alive
+      // that means this alien is defeated
       aliens[i].alive = false;
-      // alien.alive = false;
-      await wait(361);
+
+      // if (choseRetreat) {
+      //   const p1 = document.createElement('p');
+      //   p1.replaceChildren(`GAME OVER`)
+      //   break; // need to do more than this, but try to make this work first
+      // }
+      // here we want to wait for user to click attack button or retreat button
+      // but how do we wait for that? 
+      // here's a way.
+      while (!choseContinue) {
+        if (choseRetreat) {
+
+          battleEnded = true;
+          break;
+        }
+        inGameMsg.replaceChildren(`${aliens[i].id} was defeated. hit attack retreat to continue. `)
+        await wait(100);
+        if (i === aliens.length) choseContinue = true;
+      }
+      inGameMsg.replaceChildren('')
+
+      // for now, this is just to simulate some interaction having occurred.
+      // await wait(361);
     }
     else {
       // mark this alien the victor and break
       document.querySelector(`.alien${i}`).classList.add('winning-alien');
       spacelog('GAME OVER');
-      // break;
-      return false; // (from the forEach loop, not the function)
+      break;
+      // return false; // (from the forEach loop, not the function)
     }
+
 
     spacelog('---------------\n');
 
-  }
+    if (battleEnded) {
+      const p1 = document.createElement('p');
+      p1.classList.add('retreated-p1')
+      p1.replaceChildren(`GAME OVER`)
+      resultsDiv.replaceChildren(p1, 'You have retreated')
+      break;
+    }
 
-  endGame(stillAlive)
+  } // end for
+
+  if (!battleEnded) {
+    endGame(stillAlive)
+  }
 }
 
 const fight = (i) => {
@@ -285,20 +325,20 @@ const fight = (i) => {
 
 
 
-setInterval(() => {
-  if (choseContinue) {
-    continueBtn.classList.add('continue-selected');
+// setInterval(() => {
+//   if (choseContinue) {
+//     continueBtn.classList.add('continue-selected');
 
-  } else {
-    continueBtn.classList.remove('continue-selected');
-  }
-  if (choseRetreat) {
-    retreatBtn.classList.add('retreat-selected');
+//   } else {
+//     continueBtn.classList.remove('continue-selected');
+//   }
+//   if (choseRetreat) {
+//     retreatBtn.classList.add('retreat-selected');
 
-  } else {
-    retreatBtn.classList.remove('retreat-selected');
-  }
-}, 100);
+//   } else {
+//     retreatBtn.classList.remove('retreat-selected');
+//   }
+// }, 100);
 
 
 

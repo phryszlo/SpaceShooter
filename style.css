@@ -151,7 +151,7 @@ body {
   margin: 0;
 }
 
-.won-p1, .lost-p1 {
+.won-p1, .lost-p1, .retreated-p1 {
   color: red;
 }
 
