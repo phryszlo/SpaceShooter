@@ -1,7 +1,7 @@
 import spacelog from "./spaceLog.js";
 
 // target html elements
-const webConsole = document.querySelector('.console');
+const spaceConsole = document.querySelector('.console');
 const playerDiv = document.querySelector('.player');
 const aliensDiv = document.querySelector('.aliens');
 const battleBtn = document.querySelector('.battle-btn');
@@ -10,6 +10,7 @@ const continueBtn = document.querySelector('.continue');
 const numAliens = document.querySelector('#num-aliens');
 const resultsDiv = document.querySelector('.results');
 const xImg = document.querySelector('.x-img');
+const sploded = document.querySelector('.sploded');
 let player = null;
 let aliens = null;
 
@@ -18,20 +19,20 @@ let choseContinue = false;
 
 const createAlienDivs = () => {
   aliensDiv.innerText = '';
-  // aliens.forEach((alien, index) => {
-  for (let i = aliens.length - 1; i >= 0; i--) {
+  aliens.forEach((alien, i) => {
+    // for (let i = aliens.length - 1; i >= 0; i--) {
 
     aliens[i].id = `Alien[${i}]`;
     const div = document.createElement('div');
     div.classList.add('alien', `alien${i}`);
     div.innerText = aliens[i].id;
     aliensDiv.append(div);
-  }
+  })
 }
 
 const updateAlienWebDisplay = () => {
-  // aliens.forEach((alien, index) => {
-  for (let i = aliens.length - 1; i >= 0; i--) {
+  aliens.forEach((alien, i) => {
+    // for (let i = aliens.length - 1; i >= 0; i--) {
     const alienbox = document.querySelector(`.alien${i}`);
     alienbox.innerText =
       `id: ${aliens[i].id} 
@@ -40,7 +41,7 @@ const updateAlienWebDisplay = () => {
       accuracy: ${aliens[i].accuracy}
     `;
 
-  }
+  })
 }
 
 const updatePlayerWebDisplay = () => {
@@ -81,20 +82,7 @@ class PlayerShip {
     this.firepower = 5;
     this.accuracy = 0.7;
     this.id = 'USS HelloWorld';
-  }
-
-  // spawn one alien or an array of aliens of size 'num'
-  static spawn(num = 1) {
-    const ships = [];
-    if (num > 1) {
-      for (let i = 0; i < num; i++) {
-        ships.push(new PlayerShip());
-      }
-    }
-    else {
-      return new PlayerShip();
-    }
-    return ships;
+    this.alive = true;
   }
 
   attack(target) {
@@ -114,8 +102,21 @@ class PlayerShip {
       }
     }
   }
-}
 
+  // spawn one alien or an array of aliens of size 'num'
+  static spawn(num = 1) {
+    const ships = [];
+    if (num > 1) {
+      for (let i = 0; i < num; i++) {
+        ships.push(new PlayerShip());
+      }
+    }
+    else {
+      return new PlayerShip();
+    }
+    return ships;
+  }
+}
 
 // ALIEN SHIP CLASS
 class AlienShip {
@@ -126,6 +127,7 @@ class AlienShip {
     this.accuracy =
       Number.parseFloat(Math.random() * (.8 - .6) + .6).toFixed(1);
     this.id = 'Alien';
+    this.alive = true;
   }
 
   attack(target) {
@@ -133,10 +135,11 @@ class AlienShip {
     spacelog(`${this.id} attacks ${target.id}`);
 
     if (hit) {
-      spacelog(`it's a hit`);
-
+      // THIS IS THE ONLY LINE IN attack() THAT DOES ANYTHING.
+      // all of this logging could easily be moved out into the battle & fight fns.
       target.hull -= this.firepower;
 
+      spacelog(`it's a hit`);
       spacelog(`${target.id} has taken ${this.firepower} points of damage.`);
       spacelog(`${target.id} has ${target.hull} hull remaining.`);
       if (target.hull > 0) {
@@ -191,6 +194,7 @@ const endGame = (won) => {
   }
 }
 
+
 // async wait technique taken from:
 // https://thewebdev.info/2022/02/09/how-to-create-pause-or-delay-in-a-javascript-for-loop/#:~:text=JavaScript%20for%20loop%3F-,To%20create%20pause%20or%20delay%20in%20a%20JavaScript%20for%20loop,with%20a%20for%2Dof%20loop.&text=to%20define%20the%20wait%20function,to%20loop%20through%20an%20array.
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms))
@@ -198,48 +202,58 @@ const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 // THE BATTLE
 
 const battle = async () => {
-  webConsole.replaceChildren('');
+  // clear spacelog console
+  spaceConsole.replaceChildren('');
 
   let stillAlive = true;
-  // these first two loops would not get through all 6 battles
-  // because of splicing the array
-  // aliens.forEach((alien, index) => {
-  // for (let i = 0; i < aliens.length; i++) {
 
-
-  // this reverse order loop seems to work
-  for (let i = aliens.length - 1; i >= 0; i--) {
+  for (let i = 0; i < aliens.length; i++) {
 
     // if (choseContinue) {
 
     spacelog(`---------BATTLE WITH ALIEN[${i}]------\n`);
+    spacelog(`aliens remaining: 
+              ${aliens.filter(a => a.alive === true).length}`);
+
 
     updateAlienWebDisplay();
     updatePlayerWebDisplay();
 
+    // FIGHT this alien. fight() returns bool.
     stillAlive = fight(i);
 
+    // call wait between fights to simulate something happening
     if (stillAlive) {
-
-      await wait(50);
+      // that means this alien is !still-alive
+      aliens[i].alive = false;
+      // alien.alive = false;
+      await wait(361);
+    }
+    else {
+      // mark this alien the victor and break
+      document.querySelector(`.alien${i}`).classList.add('winning-alien');
+      spacelog('GAME OVER');
+      // break;
+      return false; // (from the forEach loop, not the function)
     }
 
     spacelog('---------------\n');
 
-    // }
-  } // end for
+  }
 
-  endGame(stillAlive);
+  endGame(stillAlive)
 }
 
 const fight = (i) => {
   choseContinue = false;
   choseRetreat = false;
 
-  spacelog(`aliens remaining: ${aliens.length}`);
   spacelog(`alien[${i}] now up. it has ${aliens[i].hull} hull points.`);
+
+  // while both fighters are still alive, repeat
   while (player.hull > 0 && aliens[i].hull > 0) {
 
+    const x = document.createElement('img');
     // ADD OPTION TO RUN AND HIDE HERE
 
     player.attack(aliens[i]);
@@ -248,31 +262,25 @@ const fight = (i) => {
       aliens[i].attack(player);
     }
     else {
-      spacelog(`alien ${i} died`);
       document.querySelector(`.alien${i}`).classList.add('dead-alien');
-      const x = document.createElement('img');
-      x.src = xImg.src;
-      x.classList.add('x');
+      x.src = sploded.src;
+      x.classList.add('sploded');
       x.style.display = aliens[i].hull <= 0 ? "block" : "none";
       document.querySelector(`.alien${i}`).append(x);
     }
   } // end while loop
 
   if (player.hull <= 0) {
-    document.querySelector(`.alien${i}`).classList.add('winning-alien');
 
-    spacelog('GAME OVER');
     player.alive = false;
     return false;
   }
 
   // remove dead alien from array
-  aliens.splice(i, 1);
+  // aliens.splice(i, 1);
 
   // return yes, still alive
   return true;
-
-
 }
 
 

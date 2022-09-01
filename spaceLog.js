@@ -1,11 +1,10 @@
 
 
-const webConsole = document.querySelector('.console');
-const aliensContainer = document.querySelector('.alien-container');
+const spaceConsole = document.querySelector('.console');
 
 const spacelog = (message) => {
   console.log(message);
-  webConsole.innerHTML += `${message}<br>`;
+  spaceConsole.innerHTML += `${message}<br>`;
 }
 
 export default spacelog;

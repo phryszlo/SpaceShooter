@@ -63,20 +63,24 @@ body {
   border: .2px solid deeppink;
 } */
 
+
+/* ======= count/num-aliens ========= */
 .count-div {
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 }
 .num-aliens-lbl {
   text-align: right;
   margin: .3em 0 .4em 0;
-  font-size: 14px
+  font-size: 16px
 }
 #num-aliens {
-  height: 1.2em;
-  width: 2.2em;
+  height: 1.8em;
+  line-height: 1.56em;
+  width: 3.2em;
   margin-left: 1em;
-  font-size: 16px;
+  font-size: 13px;
   margin: 0 .3em 0 .3em;
 }
 
@@ -88,16 +92,19 @@ body {
 .controls-inner button {
   height: 2.1em;
   font-size: 12px;
-  /* width: fit-content; */
+}
+
+/* THE BUTTONS */
+.btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .battle-btn {
-  /* width: 40%; */
-  /* height: 2.6em; */
-  /* border-radius: 3px; */
+  width: 70px;
   background-color: orangered;
   font-weight: bold;
-  /* margin: .2em .7em 0 0; */
 }
 
 .battle-btn:hover {
@@ -117,6 +124,8 @@ body {
 }
 
 .retreat, .continue {
+  width: 70px;
+
   background-color: #c48;
   color: white;
 }
@@ -136,6 +145,7 @@ body {
   margin: auto;
 }
 .results p {
+  font-size: 14px;;
   display: block;
   width: 60%;
   margin: 0;
@@ -172,9 +182,9 @@ body {
   /* height: 20vh;
   width: 20vw; */
   font-size: 12px;
-  max-width: 20vw;
+  max-width: 18vw;
   min-width: 5vw;
-  max-height: 20vh;
+  max-height: 15vh;
   min-height: 5vh;
   padding: 5px;
   margin: .2em;
@@ -190,7 +200,13 @@ body {
   border: 3px solid red;
   opacity: .8;
 }
-
+.sploded {
+  position: relative;
+  top: -90%;
+  left: 50%;
+  width: 60%;
+  height: 70%;
+}
 .dead-alien {
   background-color: black;
   color: white;
